@@ -1,0 +1,130 @@
+/* 容器本体（避免和网页样式冲突） */
+#cqs-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  z-index: 999999;
+  background: rgba(20, 20, 20, 0.95);
+  color: #eaeaea;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部 */
+#cqs-header {
+  padding: 12px 12px 8px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#cqs-title {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+  user-select: none;
+}
+
+/* 搜索框 */
+#cqs-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  margin: 8px 12px 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eaeaea;
+  outline: none;
+}
+
+#cqs-search::placeholder {
+  color: rgba(234, 234, 234, 0.6);
+}
+
+/* 按钮 */
+.cqs-btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eaeaea;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+}
+.cqs-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 列表 */
+#cqs-list {
+  flex: 1;
+  overflow: auto;
+  padding: 0 8px 12px 8px;
+}
+
+.cqs-item {
+  padding: 10px 10px;
+  margin: 6px 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+.cqs-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cqs-item-title {
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cqs-item-meta {
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.7;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 底部状态栏 */
+#cqs-footer {
+  padding: 10px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#cqs-status {
+  flex: 1;
+}
+
+/* 收起/展开 */
+#cqs-collapsed {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 999999;
+  display: none;
+}
+
+#cqs-sidebar.cqs-hidden {
+  display: none;
+}
+#cqs-collapsed.cqs-visible {
+  display: block;
+}
