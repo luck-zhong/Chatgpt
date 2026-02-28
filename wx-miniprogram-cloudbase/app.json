@@ -1,0 +1,20 @@
+{
+  "lazyCodeLoading": "requiredComponents",
+  "pages": [
+    "pages/home/index",
+    "pages/create/index",
+    "pages/game/index",
+    "pages/round/index",
+    "pages/records/index",
+    "pages/settlement/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "牌局计分",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#f4f6fb"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

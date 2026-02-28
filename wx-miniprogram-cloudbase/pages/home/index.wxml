@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="card">
+    <view class="title">牌局计分</view>
+    <view class="sub" style="margin-top: 10rpx;">单人主控 · 本地存储 · 无需服务器</view>
+    <button class="btn-primary" style="margin-top: 20rpx;" bindtap="goCreate">新建牌局</button>
+    <button wx:if="{{activeGame}}" style="margin-top: 12rpx;" bindtap="continueGame">继续上次牌局（{{activeGame.name}}）</button>
+  </view>
+
+  <view class="card">
+    <input class="input" placeholder="搜索牌局名称" value="{{search}}" bindinput="onSearch" />
+  </view>
+
+  <block wx:for="{{games}}" wx:key="id">
+    <view class="card">
+      <view class="row">
+        <view class="title" style="font-size: 30rpx;">{{item.name}}</view>
+        <view class="badge">{{item.statusLabel}}</view>
+      </view>
+      <view class="sub" style="margin-top: 8rpx;">更新时间：{{item.timeText}}</view>
+      <view class="sub">玩家数：{{item.players.length}} · 局数：{{item.records.length}}</view>
+
+      <view class="row" style="margin-top: 14rpx; gap: 12rpx;">
+        <button size="mini" data-id="{{item.id}}" bindtap="openGame">打开</button>
+        <button wx:if="{{item.status === 'finished'}}" size="mini" data-id="{{item.id}}" bindtap="openSettlement">结算</button>
+        <button size="mini" class="btn-danger" data-id="{{item.id}}" bindtap="removeGame">删除</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{!games.length}}" class="sub" style="text-align:center;margin-top:30rpx;">暂无牌局</view>
+</view>

@@ -1,0 +1,43 @@
+<view class="container">
+  <view class="card">
+    <view class="sub">牌局名称</view>
+    <input class="input" value="{{name}}" bindinput="onNameInput" />
+  </view>
+
+  <view class="card">
+    <view class="row" style="margin-bottom: 16rpx;">
+      <view class="sub">计分单位</view>
+      <picker mode="selector" range="{{unitOptions}}" value="{{unitIndex}}" bindchange="onUnitChange">
+        <view class="badge">{{unitOptions[unitIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <view class="sub">本把总和必须为0</view>
+      <switch checked="{{balanceRequired}}" bindchange="onBalanceChange" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="row" style="margin-bottom: 14rpx;">
+      <view class="title" style="font-size: 30rpx;">玩家（{{players.length}}/8）</view>
+      <button size="mini" bindtap="addPlayer">新增</button>
+    </view>
+
+    <block wx:for="{{players}}" wx:key="index">
+      <view class="row" style="margin-bottom: 12rpx; gap: 10rpx;">
+        <input class="input" style="flex: 1;" placeholder="玩家昵称" value="{{item.name}}" data-idx="{{index}}" bindinput="onPlayerName" />
+        <input class="input" style="width: 170rpx;" type="number" placeholder="初始分" value="{{item.initialScore}}" data-idx="{{index}}" bindinput="onPlayerInit" />
+        <button size="mini" data-idx="{{index}}" bindtap="removePlayer">删</button>
+      </view>
+    </block>
+  </view>
+
+  <view class="card" wx:if="{{pool.length}}">
+    <view class="sub" style="margin-bottom: 12rpx;">常用玩家（点一下填入空位）</view>
+    <view style="display:flex;flex-wrap:wrap;gap:10rpx;">
+      <view wx:for="{{pool}}" wx:key="*this" class="badge" data-name="{{item}}" bindtap="fillName">{{item}}</view>
+    </view>
+  </view>
+
+  <button class="btn-primary" bindtap="onSubmit">创建并开始</button>
+</view>

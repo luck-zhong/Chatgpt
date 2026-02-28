@@ -1,0 +1,10 @@
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.meta {
+  color: #5c6675;
+  margin-bottom: 6rpx;
+}

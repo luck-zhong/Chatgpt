@@ -1,0 +1,71 @@
+page {
+  background: #f4f6fb;
+  color: #1f2937;
+  font-size: 28rpx;
+}
+
+.container {
+  padding: 24rpx;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.06);
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.sub {
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-primary {
+  background: #0f62fe;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #e5484d;
+  color: #fff;
+}
+
+.input {
+  border: 1px solid #dbe2ea;
+  border-radius: 10rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0 18rpx;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.badge {
+  border-radius: 999rpx;
+  padding: 6rpx 16rpx;
+  font-size: 22rpx;
+  color: #0f62fe;
+  background: #e8f0ff;
+}
+
+.delta-plus {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.delta-minus {
+  color: #dc2626;
+  font-weight: 600;
+}

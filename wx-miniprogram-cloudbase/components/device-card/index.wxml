@@ -1,0 +1,5 @@
+<view class="card" bindtap="onTap">
+  <view class="title">{{item.name || '未命名设备'}}</view>
+  <view class="meta">状态：{{item.statusLabel}}</view>
+  <view class="meta">位置：{{item.location || '-'}}</view>
+</view>

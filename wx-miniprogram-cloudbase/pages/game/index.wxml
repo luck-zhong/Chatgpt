@@ -1,0 +1,36 @@
+<view class="container" wx:if="{{game}}">
+  <view class="card">
+    <view class="row">
+      <view>
+        <view class="title">{{game.name}}</view>
+        <view class="sub" style="margin-top: 8rpx;">开局：{{game.createdText}}</view>
+      </view>
+      <view class="badge">{{game.status === 'running' ? '进行中' : (game.status === 'paused' ? '已暂停' : '已结束')}}</view>
+    </view>
+    <view class="sub" style="margin-top: 12rpx;">局数：{{game.records.length}} · 平衡记分：{{game.settings.balanceRequired ? '开启' : '关闭'}}</view>
+  </view>
+
+  <view class="card">
+    <view class="title" style="font-size: 30rpx; margin-bottom: 14rpx;">排名</view>
+    <block wx:for="{{ranking}}" wx:key="id">
+      <view class="row" style="padding: 10rpx 0; border-bottom: 1px solid #eef2f7;">
+        <view>{{index + 1}}. {{item.name}}</view>
+        <view>
+          <text>{{item.currentScore}}</text>
+          <text class="{{item.deltaClass}}" style="margin-left: 12rpx;">{{item.lastDelta ? item.deltaText : ''}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="card">
+    <button class="btn-primary" bindtap="goRound" disabled="{{game.status !== 'running'}}">记录一把</button>
+    <button style="margin-top: 10rpx;" bindtap="goRecords">记录列表</button>
+    <view class="row" style="gap: 10rpx; margin-top: 10rpx;">
+      <button style="flex:1;" bindtap="undoLast" disabled="{{!game.records.length || game.status === 'finished'}}">撤销上一把</button>
+      <button style="flex:1;" bindtap="togglePause" disabled="{{game.status === 'finished'}}">{{game.status === 'paused' ? '继续牌局' : '暂停牌局'}}</button>
+    </view>
+    <button class="btn-danger" style="margin-top: 10rpx;" bindtap="finishGame" disabled="{{game.status === 'finished'}}">结束牌局</button>
+    <button style="margin-top: 10rpx;" bindtap="goSettlement" wx:if="{{game.status === 'finished'}}">查看结算</button>
+  </view>
+</view>

@@ -1,0 +1,29 @@
+<view class="container">
+  <view wx:if="{{loading}}">加载中...</view>
+
+  <view wx:else class="card">
+    <view class="form-item">
+      <view class="label">设备名称</view>
+      <input class="input" value="{{form.name}}" data-field="name" bindinput="onInput" placeholder="请输入设备名称" />
+    </view>
+
+    <view class="form-item">
+      <view class="label">状态</view>
+      <picker mode="selector" range="{{statusOptions}}" value="{{statusOptions.indexOf(form.status)}}" bindchange="onStatusChange">
+        <view class="input">{{form.status}}</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <view class="label">位置</view>
+      <input class="input" value="{{form.location}}" data-field="location" bindinput="onInput" placeholder="例如：A栋3楼" />
+    </view>
+
+    <view class="form-item">
+      <view class="label">备注</view>
+      <textarea class="textarea" value="{{form.note}}" data-field="note" bindinput="onInput" placeholder="可填写设备备注" />
+    </view>
+
+    <button class="btn-primary" loading="{{saving}}" bindtap="onSave">保存</button>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="container" wx:if="{{game}}">
+  <view class="card">
+    <view class="title">{{game.name}}</view>
+    <view class="sub" style="margin-top:8rpx;">开局：{{game.createdText}}</view>
+    <view class="sub">总局数：{{game.records.length}}</view>
+  </view>
+
+  <view class="card">
+    <view class="title" style="font-size:30rpx; margin-bottom: 12rpx;">排名</view>
+    <block wx:for="{{ranked}}" wx:key="id">
+      <view class="row" style="padding: 10rpx 0; border-bottom: 1px solid #eef2f7;">
+        <view>{{index + 1}}. {{item.name}}</view>
+        <view class="{{item.className}}">{{item.scoreText}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="card" wx:if="{{transfers.length}}">
+    <view class="title" style="font-size:30rpx; margin-bottom: 12rpx;">应收应付建议</view>
+    <block wx:for="{{transfers}}" wx:key="index">
+      <view class="sub" style="margin-bottom: 8rpx;">{{item.from}} -> {{item.to}}：{{item.amount}}{{game.settings.unit}}</view>
+    </block>
+  </view>
+
+  <button class="btn-primary" bindtap="reopen">{{game.status === 'finished' ? '重新开启牌局' : '返回牌局'}}</button>
+</view>

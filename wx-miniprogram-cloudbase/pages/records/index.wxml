@@ -1,0 +1,21 @@
+<view class="container" wx:if="{{game}}">
+  <view class="card">
+    <view class="title" style="font-size: 30rpx;">{{game.name}}</view>
+    <view class="sub" style="margin-top: 8rpx;">共 {{records.length}} 条记录</view>
+  </view>
+
+  <block wx:for="{{records}}" wx:key="id">
+    <view class="card">
+      <view class="row">
+        <view class="sub">第 {{item.idx}} 把</view>
+        <view class="sub">{{item.timeText}}</view>
+      </view>
+      <view style="margin-top:10rpx;">{{item.deltaText}}</view>
+      <view wx:if="{{item.tags.length}}" class="sub" style="margin-top:8rpx;">标签：{{item.tagText}}</view>
+      <view wx:if="{{item.note}}" class="sub" style="margin-top:6rpx;">备注：{{item.note}}</view>
+      <button size="mini" class="btn-danger" style="margin-top:12rpx;" data-id="{{item.id}}" bindtap="onDelete" disabled="{{game.status === 'finished'}}">删除</button>
+    </view>
+  </block>
+
+  <view wx:if="{{!records.length}}" class="sub" style="text-align:center; margin-top:20rpx;">暂无记录</view>
+</view>

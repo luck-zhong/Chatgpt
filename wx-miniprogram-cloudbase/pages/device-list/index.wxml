@@ -1,0 +1,14 @@
+<view class="container">
+  <view wx:if="{{loading}}">加载中...</view>
+
+  <block wx:elif="{{devices.length}}">
+    <device-card
+      wx:for="{{devices}}"
+      wx:key="_id"
+      item="{{item}}"
+      bind:tap="goDetail"
+    />
+  </block>
+
+  <view wx:else class="card">暂无设备数据</view>
+</view>
