@@ -1,6 +1,59 @@
-# Windows Desk Pet
+# Codex Desk Pet
 
-一个基于 `photo` 目录动作条素材的 Windows 桌面宠物。
+一个基于 `photo` 目录动作条素材生成的 Codex 自定义桌宠。
+
+已生成的 Codex 桌宠包位于：
+
+```text
+codex-pet\desk-boy\
+```
+
+本机已安装到：
+
+```text
+C:\Users\love 1118\.codex\pets\desk-boy\
+```
+
+重启 Codex 后，可以在自定义宠物中选择 `Desk Boy`。
+
+## 重新生成 Codex 宠物包
+
+```powershell
+python make_codex_pet.py
+```
+
+生成内容：
+
+- `codex-pet-build\spritesheet.png`
+- `codex-pet-build\spritesheet.webp`
+- `codex-pet-build\contact-sheet.png`
+- `C:\Users\love 1118\.codex\pets\desk-boy\pet.json`
+- `C:\Users\love 1118\.codex\pets\desk-boy\spritesheet.webp`
+
+脚本会自动：
+
+- 抠除绿色背景。
+- 识别每条动作条中的主角色帧，不按固定等分硬切。
+- 生成 Codex 固定 `1536x1872`、`8x9`、每格 `192x208` 的 spritesheet。
+- 按 Codex 状态行填入 `idle`、`running-right`、`running-left`、`waving`、`jumping`、`failed`、`waiting`、`running`、`review`。
+
+## 动作映射
+
+| Codex state | 素材 |
+| --- | --- |
+| `idle` | `待机眨眼.png` |
+| `running-right` | `监督工作.png` |
+| `running-left` | `监督工作.png` 镜像 |
+| `waving` | `监督工作.png` 采样 |
+| `jumping` | `完成庆祝.png` |
+| `failed` | `报错推手.png` |
+| `waiting` | `困倦睡觉.png` |
+| `running` | `敲代码.png` |
+| `review` | `修Bug.png` |
+
+## Windows EXE 版本
+
+下面的普通 Windows 透明窗版本仍保留，但它不是 Codex 宠物格式；优先使用上面的 Codex 包。
 
 ## 运行
 
