@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
 import json
 import re
 import shutil
@@ -15,9 +16,7 @@ ROWS = 9
 CELL_WIDTH = 192
 CELL_HEIGHT = 208
 ATLAS_SIZE = (COLUMNS * CELL_WIDTH, ROWS * CELL_HEIGHT)
-GREEN_MIN = 170
-RED_MAX = 120
-BLUE_MAX = 120
+GREEN_MIN = 135
 
 
 @dataclass(frozen=True)
@@ -52,11 +51,69 @@ def slugify(value: str) -> str:
 def remove_green_screen(image: Image.Image) -> Image.Image:
     rgba = image.convert("RGBA")
     pixels = rgba.load()
+    width, height = rgba.size
+    background = bytearray(width * height)
+    queue: deque[tuple[int, int]] = deque()
+
+    def offset(x: int, y: int) -> int:
+        return y * width + x
+
+    def is_chroma_pixel(x: int, y: int) -> bool:
+        red, green, blue, alpha = pixels[x, y]
+        if alpha == 0:
+            return True
+        strongest_non_green = max(red, blue)
+        return (
+            green >= GREEN_MIN
+            and green - strongest_non_green >= 24
+            and green >= red * 1.12
+            and green >= blue * 1.12
+        )
+
+    for x in range(width):
+        for y in (0, height - 1):
+            if is_chroma_pixel(x, y):
+                background[offset(x, y)] = 1
+                queue.append((x, y))
+    for y in range(height):
+        for x in (0, width - 1):
+            if is_chroma_pixel(x, y) and not background[offset(x, y)]:
+                background[offset(x, y)] = 1
+                queue.append((x, y))
+
+    while queue:
+        x, y = queue.popleft()
+        for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+            if nx < 0 or ny < 0 or nx >= width or ny >= height:
+                continue
+            index = offset(nx, ny)
+            if not background[index] and is_chroma_pixel(nx, ny):
+                background[index] = 1
+                queue.append((nx, ny))
+
     for y in range(rgba.height):
         for x in range(rgba.width):
-            red, green, blue, alpha = pixels[x, y]
-            if green >= GREEN_MIN and red <= RED_MAX and blue <= BLUE_MAX:
+            if background[offset(x, y)]:
+                red, green, blue, alpha = pixels[x, y]
                 pixels[x, y] = (red, green, blue, 0)
+
+    cleaned = rgba.copy()
+    cleaned_pixels = cleaned.load()
+    for y in range(height):
+        for x in range(width):
+            red, green, blue, alpha = pixels[x, y]
+            if alpha == 0:
+                continue
+            touches_background = False
+            for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                if nx < 0 or ny < 0 or nx >= width or ny >= height:
+                    continue
+                if pixels[nx, ny][3] == 0:
+                    touches_background = True
+                    break
+            if touches_background and green > max(red, blue) + 12:
+                cleaned_pixels[x, y] = (red, min(green, max(red, blue) + 10), blue, alpha)
+    rgba = cleaned
     return rgba
 
 
@@ -324,6 +381,7 @@ def main() -> None:
     parser.add_argument("--photo-dir", type=Path, default=Path("photo"))
     parser.add_argument("--output-dir", type=Path, default=Path("codex-pet-build"))
     parser.add_argument("--codex-home", type=Path, default=Path.home() / ".codex")
+    parser.add_argument("--repo-package-root", type=Path, default=Path("codex-pet"))
     parser.add_argument("--pet-name", default="desk-boy")
     parser.add_argument("--display-name", default="Desk Boy")
     args = parser.parse_args()
@@ -333,13 +391,21 @@ def main() -> None:
         raise ValueError("pet name must contain at least one ASCII letter or digit")
 
     atlas_path = compose_atlas(args.photo_dir.resolve(), args.output_dir.resolve())
-    package_pet(
-        atlas_path,
-        args.codex_home.resolve() / "pets" / pet_id,
-        pet_id,
-        args.display_name,
+    codex_pet_dir = args.codex_home.resolve() / "pets" / pet_id
+    repo_pet_dir = args.repo_package_root.resolve() / pet_id
+    package_pet(atlas_path, codex_pet_dir, pet_id, args.display_name)
+    package_pet(atlas_path, repo_pet_dir, pet_id, args.display_name)
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "atlas": str(atlas_path),
+                "codex_pet_dir": str(codex_pet_dir),
+                "repo_pet_dir": str(repo_pet_dir),
+            },
+            indent=2,
+        )
     )
-    print(json.dumps({"ok": True, "atlas": str(atlas_path), "pet_dir": str(args.codex_home.resolve() / "pets" / pet_id)}, indent=2))
 
 
 if __name__ == "__main__":

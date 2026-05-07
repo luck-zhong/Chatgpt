@@ -30,7 +30,7 @@ python -m PyInstaller `
     --clean `
     --windowed `
     --name DeskPet `
-    --add-data "photo;photo" `
+    --add-data "codex-pet;codex-pet" `
     desktop_pet.py
 
 Write-Host "Built dist\DeskPet\DeskPet.exe"
